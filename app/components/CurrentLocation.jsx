@@ -3,25 +3,30 @@ var stores = require('../data/stores')
 var findElement = require('../helpers/findElement')
 
 var CurrentLocation = React.createClass({
+  toggleFavourite: function () {
+     var storeId = this.props.storeId
+     this.props.onToggleFavourite(storeId)
+    },
   render: function () {
-    var store = findElement(stores, this.props.storeId)
-    
-    if (store) {
-      return (
-        <div className="currentlocation">
-          <i className="fa fa-map-marker" aria-hidden="true"></i>
-          {store.title}
-        </div>
-      )
-    }
-
+    var storeId = this.props.storeId
+    var store = findElement(stores, storeId)
+  if (store) {
+    var starClass = this.props.isFavourited(storeId) ? 'fa fa-star' : 'fa fa-star-o'
     return (
       <div className="currentlocation">
         <i className="fa fa-map-marker" aria-hidden="true"></i>
-        No store selected
+        {store.title}
+        <i className={starClass} onClick={this.toggleFavourite}></i>
       </div>
-    )    
+    )
   }
+  return (
+    <div className="currentlocation">
+      <i className="fa fa-map-marker" aria-hidden="true"></i>
+      No store selected
+    </div>
+  )    
+}
 })
 
 module.exports = CurrentLocation
